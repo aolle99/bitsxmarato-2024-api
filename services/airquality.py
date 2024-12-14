@@ -11,10 +11,10 @@ import os
 
 
 def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
-    host = os.getenv("FTP_HOST")
+    host = 'es-ftp.bsc.es'
     port = 8021
-    usr = os.getenv("FTP_USER")
-    pwd = os.getenv("FTP_PASSWORD")
+    usr = 'AQS_database'
+    pwd = 'yFXh+Rx3lggTsmNJ'
 
     ftp = FTP()
     ftp.connect(host, port)
@@ -63,7 +63,7 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
     col_index = idx % len(lat[0])
 
     # (298, 278)
-    num_points = 4
+    num_points = 6
     newlat = np.zeros((num_points, num_points))
     newlon = np.zeros((num_points, num_points))
     no2_values = np.zeros((num_points, num_points))
@@ -72,8 +72,8 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
         print("The center coordinate is too close to the edge of the matrix")
         exit()
 
-    lat_start = row_index
-    lon_start = col_index-2
+    lat_start = row_index - 3
+    lon_start = col_index - 3
 
     print(lat[lat_start, lon_start])
     print(lon[lat_start, lon_start])
@@ -89,7 +89,7 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
         x += 1
 
     # Parameters
-    size = 350
+    size = 256
 
     def assign_values_to_map(size, num_points, values):
 
@@ -151,13 +151,13 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
     # plt.title('Porosity estimate')
     # plt.show()
 
-    x_coords = np.linspace(newlat[0, 0], newlat[0, -1], size)
-    y_coords = np.linspace(newlon[0, 0], newlon[0, -1], size)
+    x_coords = np.linspace(newlat[0, 0], newlat[-1, -1], size)
+    y_coords = np.linspace(newlon[0, 0], newlon[-1, -1], size)
 
     llista = []
 
     for i, x in enumerate(x_coords):
         for j, y in enumerate(y_coords):
-            llista.append([x, y, zstar[i, j]*100])
+            llista.append([x, y, zstar[i, j] * 100])
 
     return llista
