@@ -11,10 +11,10 @@ import os
 
 
 def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
-    host = 'es-ftp.bsc.es'
+    host = os.getenv("FTP_HOST")
     port = 8021
-    usr = 'AQS_database'
-    pwd = 'yFXh+Rx3lggTsmNJ'
+    usr = os.getenv("FTP_USER")
+    pwd = os.getenv("FTP_PASSWORD")
 
     ftp = FTP()
     ftp.connect(host, port)
