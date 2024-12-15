@@ -1,8 +1,6 @@
 from netCDF4 import Dataset
 import numpy as np
-import matplotlib.pyplot as plt
 
-import pykrige.kriging_tools as kt
 from pykrige.uk import UniversalKriging
 from sklearn.neighbors import BallTree
 
@@ -31,14 +29,9 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
     nc_file = Dataset(filename, 'r')
 
     # Access a specific variable, e.g., 'sconcno2'
-    data = nc_file.variables['sconcno2'][:]  # Replace 'sconcno2' with your desired variable
-
-    dict_keys = ['time', 'lat', 'lon', 'x', 'y', 'lev', 'sconcno2', 'Lambert_conformal']
-    time = nc_file.variables['time'][:]
     lat = nc_file.variables['lat'][:]
     lon = nc_file.variables['lon'][:]
     sconcno2 = nc_file.variables['sconcno2'][:]
-    lev = nc_file.variables['lev'][:]
 
     nc_file.close()
     os.remove(filename)
@@ -75,8 +68,8 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
     lat_start = row_index - 3
     lon_start = col_index - 3
 
-    print(lat[lat_start, lon_start])
-    print(lon[lat_start, lon_start])
+    #print(lat[lat_start, lon_start])
+    #print(lon[lat_start, lon_start])
 
     x = 0
     for i in range(lat_start, lat_start + num_points):
@@ -137,7 +130,7 @@ def get_no2(dia, mes, hora, center_coordinate_lat, center_coordinate_lon):
         y_coords,
         flat_no2,
         variogram_model='gaussian',
-        verbose=True,
+        verbose=False,
         enable_plotting=False,
         nlags=len(flat_no2),
     )
